@@ -1,5 +1,14 @@
 import json
 
+from datetime import datetime
+
+def valid_time(time, fmt_string = "%H%M"):
+    try:
+        datetime.strptime(time, fmt_string)
+        return True
+    except ValueError:
+        return False
+
 class Flights:
 
     def __init__(self, filename, /):
@@ -22,7 +31,7 @@ class Flights:
             "destination": destination,
             "flight_number": flight_number,
             "departure": departure,
-            "next day": next_day,
+            "next_day": next_day,
             "arrival": arrival
         }      
         self.data_list.append(flight)
@@ -59,6 +68,38 @@ class Flights:
             })
         return formatted
     
+    def format_time(self, hhmm):
+        hour = int(hhmm[:2])
+        minute = int(hhmm[2:4])
+
+        suffix = "am"
+        if hour == 0:
+            hour = 12
+        elif hour == 12:
+            suffix = "pm"
+        elif hour > 12:
+            hour -= 12
+            suffix = "pm"
+        return f"{hour}:{minute:02d}{suffix}"
+    
+    def calculate_duration(self, departure, arrival, next_day):
+        dep_h = int(departure[:2])
+        dep_m = int(departure[2:4])
+        arr_h = int(arrival[:2])
+        arr_m = int(arrival[2:4])
+
+        dep_total = dep_h * 60 + dep_m
+        arr_total = arr_h * 60 + arr_m
+
+        if next_day.upper() == "Y":
+            arr_total += 24 * 60
+
+        duration = arr_total - dep_total
+        hours = duration // 60
+        minutes = duration % 60
+
+        return f"{hours}:{minutes:02d}"
+    
     def print_flight_schedule(self):
         flights = self.get_flights()
 
@@ -71,6 +112,6 @@ class Flights:
         print("====== =========== ====== ========= ======== ========")
 
         for f in flights:
-            print(f"{f['origin']:<6} {f['destination']:<11} {f['flight_number']:<6} "
-                  f"{f['departure']:<9} {f['arrival']:<9} {f['duration']:<7}")
+            print(f"{f['origin']:<6} {f['destination']:<10} {f['flight_number']:>7} "
+                  f"{f['departure']:>9} {f['arrival']:>8} {f['duration']:>8}")
         

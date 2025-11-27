@@ -3,6 +3,7 @@ import flights
 flights_list = flights.Flights("flights.json")
 
 options = ["1", "2", "3", "9"]
+nd_input = ["Y", "y", "N", "n"]
 
 while True:
     print("      *** TUFFY TITAN FLIGHT SCHEDULE MAIN MENU")
@@ -14,17 +15,25 @@ while True:
     if prompt == "1":
         origin = input("Enter origin: ")
         destination = input("Enter destinaton: ")
-        flight_number = input("Enter fligh number: ")
+        flight_number = input("Enter flight number: ")
+        if not flight_number.isdigit():
+            print("That is not a valid flight number, please input only numbers. Returning to main menu...")
+            continue
         departure_time = input("Enter departure time (HHMM): ")
+        if not flights.valid_time(departure_time) or len(departure_time) != 4:
+            print("The time inputted is not valid, you need to input in the formatt HHMM, returning to main menu.")
+            continue
         arrival_time = input("Enter arrival time (HHMM): ")
+        if not flights.valid_time(arrival_time) or len(arrival_time) != 4:
+            print("The time inputted is not valid, you need to input in the formatt HHMM, returning to main menu.")
+            continue
         next_day = input("Is arrival next day (Y/N): ")
+        if next_day not in nd_input:
+            print("Not a valid answer, only input Y or N (lowercase is accepted), returning to main menu...")
+            continue
 
         success = flights_list.add_flight(origin, destination, flight_number, departure_time, next_day, arrival_time)
-
-        if success:
-            print("Flight added.\n")
-        else:
-            print("Error: Invalid time format.\n")
+        print("Flight added.\n")
     elif prompt == "2":
         flights_list.print_flight_schedule()
         print()
