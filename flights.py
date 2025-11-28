@@ -8,6 +8,19 @@ def valid_time(time, fmt_string = "%H%M"):
         return True
     except ValueError:
         return False
+    
+def check_flight(flight_number):
+        return (flight_number != 0)
+        
+def valid_flight(flight_number):
+    return flight_number.isalnum()
+
+def valid_origin(origin):
+    return origin.isalpha()
+
+def valid_destination(destination):
+    return destination.isalpha()
+
 
 class Flights:
 
@@ -19,15 +32,16 @@ class Flights:
                 self.data_list = json.load(f)
         except FileNotFoundError:
             print(f"Error: File '{self.filename}' not found.")
+        
 
-    def add_flight(self, origin_string, destination, flight_number, departure, next_day, arrival, /):
+    def add_flight(self, origin, destination, flight_number, departure, next_day, arrival, /):
         if not (departure.isdigit() and len(departure) == 4):
             return False
         if not(arrival.isdigit() and len(arrival) == 4):
             return False
 
         flight = {
-            "origin": origin_string,
+            "origin": origin,
             "destination": destination,
             "flight_number": flight_number,
             "departure": departure,
