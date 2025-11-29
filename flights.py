@@ -2,12 +2,6 @@ import json
 
 from datetime import datetime
 
-def valid_time(time, fmt_string = "%H%M"):
-    try:
-        datetime.strptime(time, fmt_string)
-        return True
-    except ValueError:
-        return False
     
 def check_flight(flight_number):
         return (flight_number != 0)
@@ -31,13 +25,18 @@ class Flights:
             with open(self.filename, "r") as f:
                 self.data_list = json.load(f)
         except FileNotFoundError:
-            print(f"Error: File '{self.filename}' not found.")
+            print(f"Error: File '{self.filename}' not found...\n Creating new file now:{self.filename}")
         
 
     def add_flight(self, origin, destination, flight_number, departure, next_day, arrival, /):
-        if not (departure.isdigit() and len(departure) == 4):
+        try:
+            datetime.strptime(departure, "%H%M")
+        except ValueError:
             return False
-        if not(arrival.isdigit() and len(arrival) == 4):
+        
+        try:
+            datetime.strptime(arrival, "%H%M")
+        except ValueError:
             return False
 
         flight = {
@@ -50,51 +49,8 @@ class Flights:
         }      
         self.data_list.append(flight)
         with open(self.filename, "w") as f:
-            json.dump(self.data_list, f, indent=4)
+            json.dump(self.data_list, f, indent=1)
         return True
-    
-    def get_flights(self, /):
-        formatted = []
-
-        for flight in self.data_list:
-            origin = flight["origin"]
-            destination = flight["destination"]
-            flight_number = flight["flight_number"]
-            
-            departure = flight["departure"]
-            arrival = flight["arrival"]
-            next_day = flight["next_day"]
-
-            departure_fmt = self.format_time(departure)
-            arrival_fmt = self.format_time(arrival)
-            if next_day.upper() == "Y":
-                arrival_fmt = "+" + arrival_fmt
-
-            duration = self.calculate_duration(departure, arrival, next_day)
-
-            formatted.append({
-                "origin": origin,
-                "destination": destination,
-                "flight_number": flight_number,
-                "departure": departure_fmt,
-                "arrival": arrival_fmt,
-                "duration": duration
-            })
-        return formatted
-    
-    def format_time(self, hhmm):
-        hour = int(hhmm[:2])
-        minute = int(hhmm[2:4])
-
-        suffix = "am"
-        if hour == 0:
-            hour = 12
-        elif hour == 12:
-            suffix = "pm"
-        elif hour > 12:
-            hour -= 12
-            suffix = "pm"
-        return f"{hour}:{minute:02d}{suffix}"
     
     def calculate_duration(self, departure, arrival, next_day):
         dep_h = int(departure[:2])
@@ -113,6 +69,52 @@ class Flights:
         minutes = duration % 60
 
         return f"{hours}:{minutes:02d}"
+    
+    def format_time(self, hhmm):
+        hour = int(hhmm[:2])
+        minute = int(hhmm[2:4])
+
+        suffix = "am"
+        if hour == 0:
+            hour = 12
+        elif hour == 12:
+            suffix = "pm"
+        elif hour > 12:
+            hour -= 12
+            suffix = "pm"
+        return f"{hour}:{minute:02d}{suffix}"
+
+    def get_flights(self, /):
+        sorted_list = sorted(self.data_list, key=lambda f: int(f["departure"]))
+
+        formatted = []
+
+        for flight in sorted_list:
+            origin = flight["origin"]
+            destination = flight["destination"]
+            flight_number = flight["flight_number"]
+            
+            departure = flight["departure"]
+            arrival = flight["arrival"]
+            next_day = flight["next_day"]
+
+            dep_fmt = self.format_time(departure)
+            arr_fmt = self.format_time(arrival)
+            if next_day.upper() == "Y":
+                arr_fmt = "+" + arr_fmt
+
+            duration = self.calculate_duration(departure, arrival, next_day)
+
+            formatted.append({
+                "origin": origin,
+                "destination": destination,
+                "flight_number": flight_number,
+                "departure": dep_fmt,
+                "arrival": arr_fmt,
+                "duration": duration
+            })
+        return formatted
+    
     
     def print_flight_schedule(self):
         flights = self.get_flights()

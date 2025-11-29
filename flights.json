@@ -22,5 +22,13 @@
         "departure": "2200",
         "next_day": "Y",
         "arrival": "0530"
+    },
+    {
+        "origin": "TIA",
+        "destination": "LAX",
+        "flight_number": "JK559",
+        "departure": "1000",
+        "next_day": "Y",
+        "arrival": "2230"
     }
 ]

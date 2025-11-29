@@ -35,29 +35,30 @@ while True:
             print("Invalid flight number given, only letters and numbers accepted. Returning to main menu...")
             continue
         departure_time = input("Enter departure time (HHMM): ")
-        if not flights.valid_time(departure_time) or len(departure_time) != 4:
-            print("The time inputted is not valid, you need to input in the formatt HHMM.")
-            print("Military time is followed. Returning to main menu...")
+        if len(departure_time) != 4:
+            print("Invalid time length, enter only four digits (HHMM), military time is used.")
             continue
         arrival_time = input("Enter arrival time (HHMM): ")
-        if not flights.valid_time(arrival_time) or len(arrival_time) != 4:
-            print("The time inputted is not valid, you need to input in the formatt HHMM.")
-            print("Military time is followed, Returning to main menu.")
+        if len(arrival_time) != 4:
+            print("Invalid time length, enter only four digits (HHMM), military time is used.")
             continue
         next_day = input("Is arrival next day (Y/N): ")
         if next_day not in nd_input:
             print("Not a valid answer, only input Y or N (lowercase is accepted), returning to main menu...")
             continue
         success = flights_list.add_flight(origin, destination, flight_number, departure_time, next_day, arrival_time)
+        if not success:
+            print("Unable to add flight. An invalid departure or arrival time was given... returning to main menu.")
+            continue
         print("Flight succesfully added to system.\n")
     elif prompt == "2":
         flights_list.print_flight_schedule()
         print()
     elif prompt == "3":
-        new_file = input("Enter new flight schedule filename: ")
+        new_file = input("Enter flight schedule filename: ")
         flights_list = flights.Flights(new_file)
-        print(f"Filename set to {new_file}\n")
-    
+        if not flights_list:
+            print(f"New file: {new_file} being made\n")
     elif prompt == "9":
         break
 

@@ -1,0 +1,10 @@
+[
+    {
+        "origin": "LAX",
+        "destination": "TIA",
+        "flight_number": "DK338",
+        "departure": "1030",
+        "next_day": "Y",
+        "arrival": "2230"
+    }
+]
