@@ -2,18 +2,6 @@ import json
 
 from datetime import datetime
 
-    
-def check_flight(flight_number):
-        return (flight_number != 0)
-        
-def valid_flight(flight_number):
-    return flight_number.isalnum()
-
-def valid_origin(origin):
-    return origin.isalpha()
-
-def valid_destination(destination):
-    return destination.isalpha()
 
 
 class Flights:
@@ -25,7 +13,7 @@ class Flights:
             with open(self.filename, "r") as f:
                 self.data_list = json.load(f)
         except FileNotFoundError:
-            print(f"Error: File '{self.filename}' not found...\n Creating new file now:{self.filename}")
+           self.data_list = []
         
 
     def add_flight(self, origin, destination, flight_number, departure, next_day, arrival, /):
@@ -130,4 +118,16 @@ class Flights:
         for f in flights:
             print(f"{f['origin']:<6} {f['destination']:<10} {f['flight_number']:>7} "
                   f"{f['departure']:>9} {f['arrival']:>8} {f['duration']:>8}")
+
+    def check_flight(self, flight_number):
+
+        return (len(flight_number) != 0)
         
+    def valid_flight(self, flight_number):
+        return flight_number.isalnum()
+
+    def valid_origin(self, origin):
+        return origin.isalpha()
+
+    def valid_destination(self, destination):
+        return destination.isalpha()    

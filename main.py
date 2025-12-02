@@ -17,21 +17,21 @@ while True:
         if len(origin) == 0:
             print("Origin not provided, returning to main menu...")
             continue
-        if not flights.valid_origin(origin):
+        if not flights_list.valid_origin(origin):
             print("Airport does not exist, please only input letters. Returning to main menu...")
             continue
         destination = input("Enter destinaton: ")
         if len(destination) == 0:
             print("Origin not provided, returning to main menu...")
             continue
-        if not flights.valid_destination(destination):
+        if not flights_list.valid_destination(destination):
             print("Airport does not exist, please only input letters. Returning to main menu...")
             continue
         flight_number = input("Enter flight number: ")
-        if not flights.check_flight(flight_number):
+        if not flights_list.check_flight(flight_number):
             print("Flight number not provided, up to six characters must be provided. Returning to main menu...")
             continue
-        if not flights.valid_flight(flight_number):
+        if not flights_list.valid_flight(flight_number):
             print("Invalid flight number given, only letters and numbers accepted. Returning to main menu...")
             continue
         departure_time = input("Enter departure time (HHMM): ")

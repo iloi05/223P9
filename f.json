@@ -1,0 +1,10 @@
+[
+ {
+  "origin": "LAX",
+  "destination": "TIA",
+  "flight_number": "JAL213",
+  "departure": "0530",
+  "next_day": "Y",
+  "arrival": "1830"
+ }
+]

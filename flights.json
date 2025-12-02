@@ -1,34 +1,50 @@
 [
-    {
-        "origin": "ORD",
-        "destination": "CLE",
-        "flight_number": "409",
-        "departure": "1733",
-        "next_day": "N",
-        "arrival": "1857"
-    },
-    {
-        "origin": "LAX",
-        "destination": "ORD",
-        "flight_number": "545",
-        "departure": "1230",
-        "next_day": "N",
-        "arrival": "1640"
-    },
-    {
-        "origin": "IAD",
-        "destination": "LHR",
-        "flight_number": "1",
-        "departure": "2200",
-        "next_day": "Y",
-        "arrival": "0530"
-    },
-    {
-        "origin": "TIA",
-        "destination": "LAX",
-        "flight_number": "JK559",
-        "departure": "1000",
-        "next_day": "Y",
-        "arrival": "2230"
-    }
+ {
+  "origin": "ORD",
+  "destination": "CLE",
+  "flight_number": "409",
+  "departure": "1733",
+  "next_day": "N",
+  "arrival": "1857"
+ },
+ {
+  "origin": "LAX",
+  "destination": "ORD",
+  "flight_number": "545",
+  "departure": "1230",
+  "next_day": "N",
+  "arrival": "1640"
+ },
+ {
+  "origin": "IAD",
+  "destination": "LHR",
+  "flight_number": "1",
+  "departure": "2200",
+  "next_day": "Y",
+  "arrival": "0530"
+ },
+ {
+  "origin": "TIA",
+  "destination": "LAX",
+  "flight_number": "JK559",
+  "departure": "1000",
+  "next_day": "Y",
+  "arrival": "2230"
+ },
+ {
+  "origin": "LAX",
+  "destination": "BIA",
+  "flight_number": "TFA",
+  "departure": "1004",
+  "next_day": "N",
+  "arrival": "1230"
+ },
+ {
+  "origin": "LAX",
+  "destination": "TFA",
+  "flight_number": "DK665",
+  "departure": "1030",
+  "next_day": "Y",
+  "arrival": "2204"
+ }
 ]
