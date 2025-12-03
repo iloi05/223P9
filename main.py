@@ -1,3 +1,6 @@
+# Name: Ivy Loi
+# Date: 12/2/25
+# Purpose of file: Implement the functions created in flights.py
 import flights
 
 flights_list = flights.Flights("flights.json")
@@ -18,14 +21,14 @@ while True:
             print("Origin not provided, returning to main menu...")
             continue
         if not flights_list.valid_origin(origin):
-            print("Airport does not exist, please only input letters. Returning to main menu...")
+            print("Airport does not exist, please only input uppercase letters. Returning to main menu...")
             continue
         destination = input("Enter destinaton: ")
         if len(destination) == 0:
             print("Origin not provided, returning to main menu...")
             continue
         if not flights_list.valid_destination(destination):
-            print("Airport does not exist, please only input letters. Returning to main menu...")
+            print("Airport does not exist, please only input uppercase letters. Returning to main menu...")
             continue
         flight_number = input("Enter flight number: ")
         if not flights_list.check_flight(flight_number):

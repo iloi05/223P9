@@ -1,22 +1,26 @@
+# Name: Ivy Loi
+# Date: 12/2/25
+# Purpose of file: Create functions to be used in main file
 import json
 
 from datetime import datetime
 
 
-
 class Flights:
 
     def __init__(self, filename, /):
+        '''Initializing filename variable and opening json file'''
         self.filename = filename
         self.data_list = []
         try:
             with open(self.filename, "r") as f:
                 self.data_list = json.load(f)
         except FileNotFoundError:
-           self.data_list = []
+          print(f"Error: {self.filename} was not found.")
         
 
     def add_flight(self, origin, destination, flight_number, departure, next_day, arrival, /):
+        '''Adding flight information to json file'''
         try:
             datetime.strptime(departure, "%H%M")
         except ValueError:
@@ -41,38 +45,41 @@ class Flights:
         return True
     
     def calculate_duration(self, departure, arrival, next_day):
-        dep_h = int(departure[:2])
-        dep_m = int(departure[2:4])
-        arr_h = int(arrival[:2])
-        arr_m = int(arrival[2:4])
+        '''Used to calculate flight duration for get_flights'''
+        d_h = int(departure[:2])
+        d_m = int(departure[2:4])
+        a_h = int(arrival[:2])
+        a_m = int(arrival[2:4])
 
-        dep_total = dep_h * 60 + dep_m
-        arr_total = arr_h * 60 + arr_m
+        d_tot = d_h * 60 + d_m
+        a_tot = a_h * 60 + a_m
 
         if next_day.upper() == "Y":
-            arr_total += 24 * 60
+            a_tot += 24 * 60
 
-        duration = arr_total - dep_total
-        hours = duration // 60
-        minutes = duration % 60
+        duration = a_tot - d_tot
+        h = duration // 60
+        m = duration % 60
 
-        return f"{hours}:{minutes:02d}"
+        return f"{h}:{m:02d}"
     
     def format_time(self, hhmm):
-        hour = int(hhmm[:2])
-        minute = int(hhmm[2:4])
+        '''Used to format time for get_flights'''
+        h = int(hhmm[:2])
+        m = int(hhmm[2:4])
 
-        suffix = "am"
-        if hour == 0:
-            hour = 12
-        elif hour == 12:
-            suffix = "pm"
-        elif hour > 12:
-            hour -= 12
-            suffix = "pm"
-        return f"{hour}:{minute:02d}{suffix}"
+        ampm = "am"
+        if h == 0:
+            h = 12
+        elif h == 12:
+            ampm = "pm"
+        elif h > 12:
+            h -= 12
+            ampm = "pm"
+        return f"{h}:{m:02d}{ampm}"
 
     def get_flights(self, /):
+        '''Retrieves information stored in json file'''
         sorted_list = sorted(self.data_list, key=lambda f: int(f["departure"]))
 
         formatted = []
@@ -86,10 +93,10 @@ class Flights:
             arrival = flight["arrival"]
             next_day = flight["next_day"]
 
-            dep_fmt = self.format_time(departure)
-            arr_fmt = self.format_time(arrival)
+            dep_f = self.format_time(departure)
+            arr_f = self.format_time(arrival)
             if next_day.upper() == "Y":
-                arr_fmt = "+" + arr_fmt
+                arr_f = "+" + arr_f
 
             duration = self.calculate_duration(departure, arrival, next_day)
 
@@ -97,14 +104,15 @@ class Flights:
                 "origin": origin,
                 "destination": destination,
                 "flight_number": flight_number,
-                "departure": dep_fmt,
-                "arrival": arr_fmt,
+                "departure": dep_f,
+                "arrival": arr_f,
                 "duration": duration
             })
         return formatted
     
     
     def print_flight_schedule(self):
+        '''Used to print out information stored in json file'''
         flights = self.get_flights()
 
         if not flights:
@@ -120,14 +128,19 @@ class Flights:
                   f"{f['departure']:>9} {f['arrival']:>8} {f['duration']:>8}")
 
     def check_flight(self, flight_number):
-
+        '''Checks if input is empty for flight_number'''
         return (len(flight_number) != 0)
         
     def valid_flight(self, flight_number):
+        '''Checks if flight_number is just letters and numbers'''
         return flight_number.isalnum()
 
     def valid_origin(self, origin):
-        return origin.isalpha()
+        '''Checks if origin is just letters'''
+        if origin.isalpha() and origin.isupper():
+            return True
 
     def valid_destination(self, destination):
-        return destination.isalpha()    
+        '''Checks if destination is just letters'''
+        if destination.isalpha() and destination.isupper():
+            return True   
